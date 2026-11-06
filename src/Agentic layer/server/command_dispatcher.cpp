@@ -15,13 +15,21 @@ CommandDispatcher::CommandDispatcher() {
 }
 
 CommandDispatcher::CommandDispatcher(BridgeControllers controllers)
-    : m_controllers(controllers) {
+    : m_controllers(controllers), m_controllersReady(true) {
     registerHandlers();
 }
 
 void CommandDispatcher::setControllers(BridgeControllers controllers) {
+    // Handlers read m_controllers at call time, so only the pointers change;
+    // the handler map is built once in the constructor and never mutated here.
+    std::lock_guard<std::mutex> lock(m_controllersMutex);
     m_controllers = controllers;
-    registerHandlers();
+    m_controllersReady = true;
+}
+
+BridgeControllers CommandDispatcher::getControllers() const {
+    std::lock_guard<std::mutex> lock(m_controllersMutex);
+    return m_controllers;
 }
 
 void CommandDispatcher::registerHandlers() {
@@ -50,6 +58,14 @@ ExecutionResult CommandDispatcher::dispatch(const ParsedArgs& args) {
 
     auto it = m_verbHandlers.find(verb);
     if (it != m_verbHandlers.end()) {
+        // The IPC server starts before async boot finishes. Without this guard,
+        // handlers would run against null controllers and report success for
+        // edits that never happened.
+        std::unique_lock<std::mutex> lock(m_controllersMutex);
+        if (!m_controllersReady) {
+            return ExecutionResult::Error(ErrorCode::DAW_NOT_RUNNING,
+                "DAW is still booting; session controllers are not ready yet. Retry in a moment.");
+        }
         try {
             return it->second(args);
         } catch (const std::exception& e) {
