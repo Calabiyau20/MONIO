@@ -1,0 +1,15 @@
+{
+  "name": "stratawright",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "rtaudio",
+    "rtmidi",
+    "libsndfile",
+    "nlohmann-json",
+    "spdlog",
+    "catch2",
+    "sqlite3",
+    "libebur128",
+    "libsamplerate"
+  ]
+}

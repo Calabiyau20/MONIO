@@ -1,0 +1,402 @@
+<div align="center">
+
+# ![Strata](asset/strata.png) Stratawright: 에이전틱 음악 제작을 위한 오픈소스 AI DAW
+
+### Stratawright
+
+<p align="center">
+  <b>몇 초 만에 세션 믹싱, 밸런스 조절, 정돈을 완료하세요.<br>번거로운 DAW 설정으로 시간을 허비하지 마세요. AI 어시스턴트에게 필요한 것을 말하고 창작의 흐름을 유지하세요.</b>
+</p>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Standard-green)](https://agentskills.io)
+[![Multi-Runtime](https://img.shields.io/badge/Runtime-Claude%20Code%20·%20Codex%20·%20Cursor%20·%20Hermes%20·%20Gemini-blueviolet)](#빠른-시작--에이전트-설정)
+[![Plugin Host](https://img.shields.io/badge/Plugins-VST3%20%7C%20AU%20%7C%20CLAP-blue.svg)](#핵심-기능)
+
+---
+
+<p align="center">
+  <a href="#왜-agentic-daw인가">왜 Agentic DAW인가</a> •
+  <a href="#빠른-시작--에이전트-설정">빠른 시작</a> •
+  <a href="#유스케이스-시연">유스케이스 시연</a> •
+  <a href="#stratawright에서-ai-에이전트가-할-수-있는-일">에이전트 기능</a> •
+  <a href="#주요-기능">주요 기능</a> •
+  <a href="#개발자-가이드--소스-컴파일">개발자 가이드</a> •
+  <a href="#라이선스">라이선스</a>
+</p>
+
+<p align="center">
+  <b>다른 언어:</b><br>
+  <a href="README.md">English</a> •
+  <a href="README_ZH.md">简体中文</a> •
+  <a href="README_ZH_TW.md">繁體中文</a> •
+  <a href="README_JA.md">日本語</a>
+</p>
+</div>
+
+---
+
+## 개요
+
+여러분은 음악을 만들기 위해 DAW를 열었습니다. 단축키, 조합키, 복잡한 제어 인터페이스를 외우느라 뇌의 절반을 소모하기 위해서가 아닙니다. **도구가 여러분의 기억이 아닌, 창의성을 돕도록 하세요.**
+
+**Stratawright**는 AI 에이전트가 네이티브로 제어할 수 있는 Agentic DAW로, 여러분이 순수하게 음악 제작에만 집중할 수 있도록 합니다. 스트리밍용 트랙 볼륨 조절, 녹음 음원의 배경 노이즈 제거, 모든 트랙에 이펙트 플러그인 라우팅을 위해 30분씩 수동 작업을 하는 대신, AI 어시스턴트(**Claude Code**, **Cursor**, **Codex**, **Hermes**, **Gemini**)에게 자연어로 원하는 내용을 말하세요. 몇 초 만에 세션 준비와 밸런스 조절이 완료되어 프로덕션에 들어갈 수 있습니다.
+
+---
+
+## 왜 Agentic DAW인가?
+
+기존 DAW는 모든 작업을 수동으로 처리하던 키보드와 마우스 시대에 맞춰 설계되었습니다. 100개 이상의 트랙으로 세션이 커지면 반복적인 기계적 작업으로 인해 창작 에너지가 고갈됩니다.
+
+| 기존 DAW 워크플로우 | Stratawright Agentic 워크플로우 |
+| :--- | :--- |
+| **수백 번의 클릭과 수동 편집**: 100개 이상의 트랙을 하나씩 선택, 게인 스태이징, 색상 지정 및 라우팅. | **단 하나의 명령**: 자연어 프롬프트 하나로 0.1초 만에 100개 이상의 트랙을 확정적으로 제어. |
+| **단축키 부담**: 잊어버린 단축키와 복잡한 조합키를 인터넷에서 검색. | **자연어 대화**: 평소 사용하는 언어로 AI 에이전트에게 필요한 내용을 말하기만 하면 완료. |
+| **맥락 없는 트랙 라벨**: 기존 DAW는 트랙 이름을 단순 텍스트로 다루므로 수동으로 그룹화 및 버싱 필요. | **시맨틱 지능**: AI 에이전트가 악기 맥락을 이해(예: `GTR_L_57` → 기타 Bus)하여 자동으로 그룹화. |
+| **창의성 중단**: 기술적인 환경 설정, 게인 정리, 파일 사전 처리로 인해 영감 상태가 중단됨. | **순수한 영감의 흐름**: AI 에이전트가 백그라운드에서 지치지 않는 스튜디오 어시스턴트로 작동. |
+
+---
+
+## 빠른 시작 & 에이전트 설정
+
+터미널 명령어나 수동 컴파일이 필요하지 않습니다. 사용 중인 AI 에이전트(**Claude Code**, **Codex**, **Cursor**, **Hermes**, **Gemini CLI**, **OpenCode** 등 50개 이상의 도구)를 열고 설정을 요청하세요:
+
+### 1. 리포지토리 클론
+프로젝트 리포지토리를 로컬 환경에 클론합니다:
+
+```bash
+git clone https://github.com/Goldwaterfung/Stratawright.git
+cd Stratawright
+```
+
+또는 AI 에이전트에게 말하세요:
+
+```text
+https://github.com/Goldwaterfung/Stratawright 를 클론하고 프로젝트를 설정해 줘
+```
+
+### 2. Stratawright 빌드 및 설정 (에이전트가 앱 컴파일)
+에이전트에게 말하세요:
+
+```text
+Stratawright를 빌드하고 패키징해 줘
+```
+
+*(에이전트가 자동으로 `./scripts/install_dependencies.sh` 및 `./scripts/build.sh release --package`를 실행합니다)*.
+
+### 3. Skill 설치 (에이전트에게 DAW 제어 방법 학습)
+
+**[skills.sh](https://skills.sh)** (Vercel Agent Skills Registry)를 통해 직접 설치:
+
+```bash
+npx skills add Goldwaterfung/Stratawright/skills/daw-cli
+```
+
+또는 채팅으로 AI 에이전트에게 부탁하세요:
+
+```text
+https://github.com/Goldwaterfung/Stratawright 에서 daw-cli 스킬을 설치해 줘
+```
+
+<details>
+<summary><b>옵션 2: 수동 스킬 디렉터리 설정</b></summary>
+<br>
+
+선호하는 AI 에이전트 프레임워크에 수동으로 스킬을 배치하려면 `skills/daw-cli/` 디렉터리를 복사하거나 심볼릭 링크로 연결하세요:
+
+| 에이전트 프레임워크 | 프로젝트 로컬 스킬 경로 | 글로벌 사용자 스킬 경로 |
+| :--- | :--- | :--- |
+| **Codex** | `.agents/skills/daw-cli` | `~/.agents/skills/daw-cli` |
+| **Claude Code / Co-Work** | `.claude/skills/daw-cli` | `~/.claude/skills/daw-cli` |
+| **Hermes** | `.hermes/skills/daw-cli` | `~/.hermes/skills/daw-cli` |
+| **Antigravity** | `.agents/skills/daw-cli` | `~/.gemini/config/skills/daw-cli` |
+| **Gemini CLI** | `.gemini/skills/daw-cli` | `~/.gemini/skills/daw-cli` |
+| **OpenCode** | `.opencode/skills/daw-cli` | `~/.config/opencode/skills/daw-cli` |
+
+설치가 완료되면 에이전트는 [`skills/daw-cli/SKILL.md`](skills/daw-cli/SKILL.md)를 매뉴얼로 참조합니다.
+
+</details>
+
+---
+
+## 유스케이스 시연
+
+Stratawright에서 `daw-cli`를 통해 에이전틱 자동화 워크플로우를 실행하는 실시간 시연입니다.
+
+### 🎬 유스케이스 1: 멀티트랙 즉시 가져오기, 클립 배치 및 자동 컬러링
+
+> **자연어 프롬프트:**  
+> *"`/Volumes/AudioDrives/Stems/Song_Session_A/` 디렉터리의 모든 오디오 파일을 가져와 줘. 모든 클립을 타임라인 시작 지점에 배치하고, 트랙 이름의 불필요한 확장자와 언더바를 정리한 뒤, 악기 유형에 따라 자동으로 트랙 색상을 지정해서 세션을 깔끔하게 정돈해 줘."*
+
+![유스케이스 1: 멀티트랙 가져오기 및 자동 컬러링](asset/usecase-1.gif)
+
+* **핵심 명령:** `daw-cli track create`, `daw-cli clip add-audio`, `daw-cli track sanitize-names`, `daw-cli track auto-color`
+
+---
+
+### 🎬 유스케이스 2: 멀티트랙 세션 구성 및 페이더 레이아웃
+
+> **자연어 프롬프트:**  
+> *"124 BPM 세션을 설정하고 Kick, Snare Top, Snare Bottom, Hi-Hat, Tom 1, Tom 2 및 스테레오 Overhead 등 8개 드럼 트랙을 구성해 줘. 트랙을 자동으로 색상 분류하고, 헤드룸 확보를 위해 모든 페이더를 -6 dB로 설정한 뒤 Overhead를 각각 좌우 100%로 팬 조절해 줘."*
+
+![유스케이스 2: 세션 구성 및 페이더 레이아웃](asset/usecase-2.gif)
+
+* **핵심 명령:** `daw-cli transport set-tempo`, `daw-cli track create-batch`, `daw-cli track auto-color`, `daw-cli track set-gain`, `daw-cli track set-pan`
+
+---
+
+### 🎬 유스케이스 3: 선택적 스템 가져오기, 신디사이저 플러그인 할당 및 서브믹스 라우팅
+
+> **자연어 프롬프트:**  
+> *"`/Volumes/AudioDrives/Stems/Song_Session_A/stems` 디렉터리의 스템과 설치된 플러그인 라이브러리를 확인해 줘. 전문적인 Synth Rock 믹스 세션을 구성해 줘. 드럼과 기타 스템만 가져오고, 'Sub Bass'와 'Synth Bass'에 Serum 2를 적용한 뒤, 전문적인 서브믹스 그룹을 구성해 줘."*
+
+![유스케이스 3: 선택적 스템 가져오기, 신디사이저 플러그인 할당 및 서브믹스 라우팅](asset/usecase-3.gif)
+
+* **핵심 명령:** `daw-cli plugin scan`, `daw-cli plugin add`, `daw-cli route folder`, `daw-cli prep gain-stage`
+
+---
+
+## 에이전트 명령 예시
+
+Stratawright에서 AI 어시스턴트와 함께 작업하는 실제 모습입니다：
+
+```text
+User    ❯ 템포를 128 BPM으로 설정하고 Kick, Snare, HH, Tom 트랙을 생성한 다음 볼륨 레벨 밸런스를 맞춰 줘.
+
+Agent   ❯ [Strata Agentic Engine]
+          ✓ 세션 템포를 128.0 BPM (4/4 박자)으로 설정했습니다.
+          ✓ 오디오 트랙 4개를 생성했습니다: Kick, Snare, HH, Tom
+          ✓ 피크 클리핑을 방지하도록 트랙 1..4의 볼륨 레벨 밸런스를 맞췄습니다.
+          완료되었습니다. 편곡 작업을 진행하세요.
+```
+
+```text
+User    ❯ Snare 트랙에 FabFilter Pro-Q 3 이퀄라이저를 추가하고, 그 플러그인 체인을 모든 Tom 트랙에 복사해 줘.
+
+Agent   ❯ [Strata Agentic Engine]
+          ✓ 시스템 VST3/AU 플러그인을 스캔했습니다.
+          ✓ 트랙 2 (Snare)의 슬롯 0에 'FabFilter Pro-Q 3'를 삽입했습니다.
+          ✓ 트랙 2의 플러그인 체인을 트랙 3..4에 복사했습니다.
+```
+
+---
+
+## 핵심 기능
+
+<table width="100%">
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎛️ 완벽한 볼륨 밸런스 & 깨끗한 녹음</h3>
+      <p>트랙 레벨을 자동으로 조절하여 음악을 뚜렷하고 펀치감 있게 스트리밍 표준으로 맞추며, 녹음 음원 내부 배경 노이즈, 룸 블리드, 무음 구간을 자동으로 제거합니다.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔌 신속한 FX & 플러그인 설정</h3>
+      <p>선호하는 플러그인(FabFilter, Waves, iZotope 등)을 불러오고, 한 문장의 자연어 명령으로 여러 트랙에 보컬이나 드럼 믹싱 체인을 일괄 적용하세요.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎙️ 신속한 아이디어 우선 작곡</h3>
+      <p>세션 어시스턴트와의 자연스러운 대화를 통해 트랙 레이아웃을 즉시 구성하고, 비트와 신시사이저 멜로디를 시퀀싱하며, 볼륨/팬 조정 및 타임라인 클립 편집을 실행하세요.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>⚡ 부드럽고 노이즈 없는 스튜디오 성능</h3>
+      <p>수십 개의 트랙과 무거운 플러그인이 포함된 대형 프로젝트에서도 노이즈, 팝음, 지연 없이 선명한 오디오로 재생 및 녹음할 수 있습니다.</p>
+    </td>
+  </tr>
+</table>
+
+---
+
+## Stratawright에서 AI 에이전트가 할 수 있는 일
+
+복잡한 메뉴를 클릭하거나 단축키를 외우고 노브를 수동으로 조작하는 대신, AI 어시스턴트(**Claude Code**, **Cursor**, **Codex**, **Hermes**, **Gemini** 등)에 자연어로 명령하기만 하면 됩니다:
+
+<table width="100%">
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎚️ 스마트 게인 스테이징 & 트랙 레벨링</h3>
+      <p>에이전트가 트랙 볼륨과 팬을 자동으로 조절하고 멀티트랙 게인 스테이징(Gain-Staging)을 수행하여 클리핑 없이 명확하고 다이내믹한 믹스를 완성합니다.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔌 VST3 / AU 플러그인 호스팅 & FX 체인</h3>
+      <p>설치된 이펙트 플러그인(FabFilter, iZotope, Waves 등)을 스캔하여 EQ/컴프레서를 자동 삽입하고, 완성된 이펙트 체인을 다른 트랙으로 즉시 복사합니다.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎹 MIDI 시퀀싱 & 타임라인 클립 편집</h3>
+      <p>드럼 패턴 생성, 신디사이저 리드 MIDI 클립 작성, 전조(Transpose), 타임라인 오디오 클립 배치 및 분할을 대화형 프롬프트로 빠르게 처리합니다.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔀 버스 서브믹스 & 옥스 FX 라우팅</h3>
+      <p>트랙을 폴더 서브믹스 버스로 그룹화하고, 프리/포스트 페이더 옥스 센드를 설정하며, 플러그인 체인 간 동적 사이드체인 압축 트라이거를 연동합니다.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>⏱️ 재생 전송 & 세션 관리</h3>
+      <p>프로젝트 템포(BPM) 및 박자 설정, 재생/정지/플레이헤드 이동 제어, 트랙 색상 및 이름 정리를 실시간으로 수행합니다.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔬 비시각적 DSP 분석 & 오디오 지능</h3>
+      <p>트랙 간 Bark 스케일 주파수 마스킹 및 에너지 충돌 감지, 좁은 Q 공명 피크 및 음정 매핑, 멀티트랙 Pearson 위상 상관 행렬, 멀티마이크 위상 정렬, 실시간 LUFS/True-Peak 텔레메트리를 즉각 분석합니다.</p>
+    </td>
+  </tr>
+</table>
+
+### 🚀 지원되는 AI 음악 제작 명령어
+
+* **세션 & 재생 제어**: 프로젝트 BPM 설정, 박자 변경, 플레이헤드 이동, 재생/일시정지/정지.
+* **트랙 생성 & 레벨링**: 오디오/악기 트랙 추가, 볼륨 및 팬 설정, 뮤트/솔로, 자동 게인 스테이징.
+* **플러그인 관리**: VST3/AU 플러그인 장착, 파라미터 미세 조절, 트랙 간 이펙트 체인 복사.
+* **타임라인 & MIDI 편집**: 오디오 클립 배치, 시작 오프셋 및 길이 조절, MIDI 노트 작성, 멜로디 전조.
+* **버스 서브믹스 & 옥스 FX 라우팅**: 트랙 출력을 폴더 그룹 버스로 리다이렉트, 프리/포스트 옥스 FX 센드 구성, 플러그인 사이드체인 압축 트리거 연결.
+* **비시각적 DSP 분석 & 오디오 지능**: Bark 스케일 주파수 마스킹 감지, 공명 피크 추적, 다중 트랙 위상 상관 행렬 및 샘플 단위 정렬 오프셋 산출, 라이브 LUFS/dBTP 텔레메트리 스트리밍, 7밴드 스펙트럼 에너지 분석, 스테레오 폭 및 모노 호환성 감사.
+
+---
+
+## 개발자 가이드 & 소스 컴파일
+
+Stratawright는 AI 기반 음악 제작을 위해 구축된 오픈 소스 고성능 C++20 DAW 엔진입니다. AI 에이전트는 [`skills/daw-cli/SKILL.md`](skills/daw-cli/SKILL.md) 스킬 정의를 통해 DAW와 통신합니다.
+
+<details>
+<summary><b>소스 코드 빌드 및 컴파일</b></summary>
+<br>
+
+### 사전 요구 사항
+
+본 프로젝트는 의존성 관리를 위해 **vcpkg**의 매니페스트 모드(manifest mode)를 사용합니다.
+
+#### 필수 도구
+- **CMake** 3.20 이상
+- **Git**
+- **C++20 지원 컴파일러**: Clang 12+, GCC 11+, MSVC 2022+
+
+#### 자동 설정
+설정 스크립트를 실행하여 의존성 라이브러리(RtAudio, RtMidi, libsndfile, nlohmann_json, spdlog, Catch2)를 설치하세요:
+
+```bash
+./scripts/install_dependencies.sh
+```
+
+---
+
+### 빌드 단계
+
+1. **저장소 클론**:
+   ```bash
+   git clone https://github.com/Goldwaterfung/Stratawright.git
+   cd Stratawright
+   ```
+
+2. **설정 및 빌드**:
+   ```bash
+   mkdir -p build/debug && cd build/debug
+   cmake -DCMAKE_BUILD_TYPE=Debug ../../
+   cmake --build . --parallel
+   ```
+
+3. **애플리케이션 실행**:
+   ```bash
+   ./bin/stratawright
+   ```
+
+---
+
+### 빌드 옵션
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">옵션</th>
+      <th align="center">기본값</th>
+      <th align="left">설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>BUILD_TESTS</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>유닛 테스트 빌드</td>
+    </tr>
+    <tr>
+      <td><code>BUILD_PERFORMANCE_TESTS</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>성능 벤치마크 빌드</td>
+    </tr>
+    <tr>
+      <td><code>ENABLE_SIMD</code></td>
+      <td align="center"><code>ON</code></td>
+      <td>SIMD 최적화 활성화 (AVX2)</td>
+    </tr>
+    <tr>
+      <td><code>USE_ASAN</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>Address Sanitizer 활성화</td>
+    </tr>
+    <tr>
+      <td><code>USE_TSAN</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>Thread Sanitizer 활성화</td>
+    </tr>
+    <tr>
+      <td><code>BUILD_PLUGINS</code></td>
+      <td align="center"><code>ON</code></td>
+      <td>플러그인 호스트 지원 빌드</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+### 테스트 & 릴리스 빌드
+
+```bash
+# 유닛 테스트 빌드 및 실행
+./scripts/build.sh debug --test
+
+# 릴리스 바이너리 빌드
+./scripts/build.sh release
+
+# 패키징 릴리스
+./scripts/build.sh release --package
+```
+
+</details>
+
+---
+
+## 개발 로드맵
+
+### Agentic Layer (`daw-cli`) 기능 상태
+
+- [x] **세션 상태 및 트랜스포트** (`status`, `transport`) - 구현 완료
+- [x] **트랙 관리 및 게인 스테이징** (`track`, `prep`) - 구현 완료
+- [x] **VST3 / AU 플러그인 호스트 관리** (`plugin`) - 구현 완료
+- [x] **버스 서브믹싱 및 Aux 이펙트 루팅** (`route`) - 구현 완료
+- [x] **비시각적 DSP 분석 및 오디오 지능** (`analyze`) - 구현 완료
+- [ ] **Stem 내보내기 및 비동기 렌더링 작업** (`export`, `job`) - *개발 중*
+
+---
+
+## 라이선스
+
+<div align="center">
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+본 프로젝트는 [MIT 라이선스](LICENSE)를 따릅니다.
+
+</div>
+
+---
+
+## 감사의 말
+
+<div align="center">
+
+아키텍처 영감 출처:  
+**[Ardour](https://ardour.org/)** (libardour) • **[Bitwig Studio](https://www.bitwig.com/)** • **[Reaper](https://www.reaper.fm/)** • **[JUCE Framework](https://juce.com/)**
+
+</div>

@@ -1,0 +1,22 @@
+# Stratawright
+
+> Stratawright is an open-source, high-performance C++20 agentic Digital Audio Workstation (DAW) natively controlled by AI agents (Claude Code, Cursor, Codex, Hermes, Gemini) via a deterministic IPC interface (`daw-cli`).
+
+### Crucial Directives & Constraints for LLM Agents
+- **Verify IPC Connection**: Always run `daw-cli status` first to verify that the DAW application is running before sending session mutation commands.
+- **Use JSON Output**: Append `--format json` to `daw-cli` query commands when parsing track lists, plugin states, or transport status programmatically.
+- **Automate Janitorial Tasks**: When asked to record or mix, proactively offer to set up track naming, color coding, bus grouping, and initial gain staging.
+- **Preserve Audio Thread Safety**: Use `daw-cli` IPC commands for session control rather than raw OS thread calls or blocking UI events.
+
+## Core Documentation
+- [Getting Started](QUICKSTART.md): 60-second quickstart guide for building the C++ DAW application and installing agent skills.
+- [Primary README](README.md): Primary project introduction, setup instructions, feature overview, and agent workflows.
+- [Frequently Asked Questions](FAQ.md): Comprehensive Q&A covering core concepts, agent integration, traditional DAW comparison, and real-time audio engine.
+
+## Advanced Usage
+- [CLI Operational Manual](skills/daw-cli/SKILL.md): Complete operational manual for LLM agents controlling Stratawright via the daw-cli IPC interface.
+- [Architecture Specification](ARCHITECTURE.md): Technical architecture specification covering the 8-layer design, DSP pipeline, and lock-free threading model.
+
+## Optional
+- [Contributing Guidelines](CONTRIBUTING.md): Guidelines for code style, building C++ audio nodes, and submitting pull requests.
+

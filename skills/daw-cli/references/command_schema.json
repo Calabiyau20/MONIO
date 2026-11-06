@@ -1,0 +1,449 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stratawright DAW CLI Command Schema",
+  "description": "Machine-readable definition of all verbs, subcommands, flags, option types, and output symbols in daw-cli.",
+  "socketPath": "/tmp/daw_session.sock",
+  "outputFormats": ["tsv", "kv", "json", "pretty"],
+  "verbs": {
+    "status": {
+      "description": "Queries current transport state, tempo, time signature, and playhead position.",
+      "subcommands": {},
+      "options": {
+        "--format": { "type": "string", "enum": ["tsv", "kv", "json", "pretty"], "default": "kv" }
+      },
+      "successSymbol": "STATUS_OK"
+    },
+    "transport": {
+      "description": "Controls audio playback and timeline settings.",
+      "subcommands": {
+        "play": {
+          "description": "Starts transport audio playback.",
+          "options": {},
+          "successSymbol": "PLAYBACK_STARTED"
+        },
+        "stop": {
+          "description": "Stops transport audio playback.",
+          "options": {},
+          "successSymbol": "PLAYBACK_STOPPED"
+        },
+        "set-tempo": {
+          "description": "Sets session tempo in BPM.",
+          "options": {
+            "--bpm": { "type": "number", "required": true, "alias": ["--tempo"], "description": "Tempo value in BPM (e.g., 120.0)" }
+          },
+          "successSymbol": "TEMPO_UPDATED"
+        },
+        "set-time-signature": {
+          "description": "Sets time signature numerator and denominator.",
+          "options": {
+            "--num": { "type": "integer", "default": 4, "description": "Time signature numerator (1..32)" },
+            "--den": { "type": "integer", "default": 4, "description": "Time signature denominator (2, 4, 8, 16, 32)" }
+          },
+          "successSymbol": "TIME_SIGNATURE_UPDATED"
+        }
+      }
+    },
+    "track": {
+      "description": "Manages track layout, channels, gain, pan, mute, solo, and coloring.",
+      "subcommands": {
+        "create": {
+          "description": "Creates a new track.",
+          "options": {
+            "--name": { "type": "string", "default": "Untitled Track" },
+            "--type": { "type": "string", "enum": ["audio", "midi", "instrument", "aux", "folder"], "default": "audio" },
+            "--color": { "type": "string", "default": "blue", "description": "Color name or #HEX string" }
+          },
+          "successSymbol": "TRACK_CREATED"
+        },
+        "create-batch": {
+          "description": "Creates multiple tracks in batch.",
+          "options": {
+            "--names": { "type": "string", "required": true, "description": "Comma-separated list of track names" },
+            "--type": { "type": "string", "enum": ["audio", "midi", "instrument", "aux", "folder"], "default": "audio" }
+          },
+          "successSymbol": "BATCH_TRACKS_CREATED"
+        },
+        "list": {
+          "description": "Lists all tracks in the session.",
+          "options": {
+            "--format": { "type": "string", "enum": ["tsv", "kv", "json", "pretty"], "default": "tsv" }
+          },
+          "successSymbol": "TRACK_LIST"
+        },
+        "inspect": {
+          "description": "Inspects detailed parameters for a track.",
+          "options": {
+            "--track": { "type": "integer", "default": 1, "description": "Track ID" }
+          },
+          "successSymbol": "TRACK_INSPECT"
+        },
+        "set-gain": {
+          "description": "Sets volume gain in dB.",
+          "options": {
+            "--track": { "type": "string", "default": "1", "description": "Track ID or range (e.g. 1..4)" },
+            "--db": { "type": "number", "required": true, "description": "Fader gain level in dB" }
+          },
+          "successSymbol": "TRACK_GAIN_UPDATED"
+        },
+        "set-pan": {
+          "description": "Sets track pan position.",
+          "options": {
+            "--track": { "type": "string", "default": "1", "description": "Track ID or range" },
+            "--value": { "type": "number", "required": true, "description": "Pan position (-1.0 Left to +1.0 Right)" }
+          },
+          "successSymbol": "TRACK_PAN_UPDATED"
+        },
+        "set-mute": {
+          "description": "Mutes or unmutes tracks.",
+          "options": {
+            "--track": { "type": "string", "default": "1" },
+            "--on": { "type": "boolean", "default": false, "description": "Pass flag to mute, omit to unmute" }
+          },
+          "successSymbol": "TRACK_MUTE_UPDATED"
+        },
+        "set-solo": {
+          "description": "Solos or unsolos tracks.",
+          "options": {
+            "--track": { "type": "string", "default": "1" },
+            "--on": { "type": "boolean", "default": false, "description": "Pass flag to solo, omit to unsolo" }
+          },
+          "successSymbol": "TRACK_SOLO_UPDATED"
+        },
+        "delete": {
+          "description": "Deletes track(s) from session.",
+          "options": {
+            "--track": { "type": "string", "required": true, "description": "Track ID or range to delete" }
+          },
+          "successSymbol": "TRACK_DELETED"
+        },
+        "set-color": {
+          "description": "Sets track color.",
+          "options": {
+            "--track": { "type": "string", "default": "1" },
+            "--color": { "type": "string", "required": true, "description": "Semantic color name or #HEX" }
+          },
+          "successSymbol": "TRACK_COLOR_UPDATED"
+        },
+        "auto-color": {
+          "description": "Automatically colors tracks based on instrument family keywords.",
+          "options": {},
+          "successSymbol": "TRACKS_AUTO_COLORED"
+        },
+        "sanitize-names": {
+          "description": "Cleans track names by removing file extension artifacts and underscores.",
+          "options": {},
+          "successSymbol": "TRACK_NAMES_SANITIZED"
+        }
+      }
+    },
+    "prep": {
+      "description": "Session preparation utilities.",
+      "subcommands": {
+        "gain-stage": {
+          "description": "Normalizes track gain to target RMS headroom in dB.",
+          "options": {
+            "--track": { "type": "string", "default": "1..8" },
+            "--target-rms": { "type": "number", "default": -18.0 }
+          },
+          "successSymbol": "GAIN_STAGE_COMPLETED"
+        }
+      }
+    },
+    "plugin": {
+      "description": "Hosts and manipulates VST3/AU/CLAP plugins.",
+      "subcommands": {
+        "scan": {
+          "description": "Scans host system for installed audio plugins.",
+          "options": {},
+          "successSymbol": "PLUGIN_SCAN_COMPLETED"
+        },
+        "list": {
+          "description": "Lists discovered plugins.",
+          "options": {
+            "--filter": { "type": "string", "description": "Substring filter on name or vendor" },
+            "--category": { "type": "string", "enum": ["effect", "fx", "instrument", "synth"] },
+            "--head": { "type": "integer", "description": "Limit output to first N results" },
+            "--tail": { "type": "integer", "description": "Limit output to last N results" },
+            "--format": { "type": "string", "enum": ["tsv", "kv", "json", "pretty"], "default": "tsv" }
+          },
+          "successSymbol": "PLUGIN_LIST"
+        },
+        "add": {
+          "description": "Inserts a plugin into a track slot.",
+          "options": {
+            "--track": { "type": "string", "default": "1" },
+            "--name": { "type": "string", "description": "Exact case-sensitive plugin name" },
+            "--id": { "type": "integer", "description": "Numeric plugin ID" },
+            "--slot": { "type": "integer", "default": 0, "description": "Insert slot index (0..7)" }
+          },
+          "successSymbol": "PLUGIN_ADDED"
+        },
+        "set-param": {
+          "description": "Sets a normalized parameter value on an inserted plugin.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--plugin": { "type": "integer", "default": 0, "alias": ["--slot"], "description": "Slot index (0..7)" },
+            "--param": { "type": "integer", "required": true, "description": "Parameter index" },
+            "--val": { "type": "number", "required": true, "description": "Normalized float value (0.0..1.0)" }
+          },
+          "successSymbol": "PLUGIN_PARAM_UPDATED"
+        },
+        "copy": {
+          "description": "Copies a single plugin slot from one track to other tracks.",
+          "options": {
+            "--from-track": { "type": "integer", "default": 1 },
+            "--slot": { "type": "integer", "default": 0 },
+            "--to-tracks": { "type": "string", "required": true, "description": "Target track range" },
+            "--overwrite": { "type": "boolean", "default": false, "description": "Overwrite target slots if occupied" }
+          },
+          "successSymbol": "PLUGIN_COPIED"
+        },
+        "copy-chain": {
+          "description": "Copies all 8 insert plugin slots from source track to destination tracks.",
+          "options": {
+            "--from-track": { "type": "integer", "default": 1 },
+            "--to-tracks": { "type": "string", "required": true },
+            "--overwrite": { "type": "boolean", "default": false }
+          },
+          "successSymbol": "PLUGIN_CHAIN_COPIED"
+        }
+      }
+    },
+    "clip": {
+      "description": "Manages arrangement timeline clips, trimming, gain, mute, split, and quantization.",
+      "subcommands": {
+        "add-audio": {
+          "description": "Imports an audio clip onto a track timeline.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Target track ID" },
+            "--path": { "type": "string", "required": true, "description": "Absolute filesystem path to audio file" },
+            "--start": { "type": "string", "required": true, "description": "BBT position (e.g. 1.1.0)" }
+          },
+          "successSymbol": "CLIP_ADDED"
+        },
+        "add-midi": {
+          "description": "Inserts a new MIDI clip region on a track.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Target track ID" },
+            "--start": { "type": "string", "required": true, "description": "BBT start position (e.g. 1.1.0)" },
+            "--dur": { "type": "string", "required": true, "description": "BBT duration string (e.g. 4.0.0)" }
+          },
+          "successSymbol": "CLIP_ADDED"
+        },
+        "list": {
+          "description": "Lists arrangement clips.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" },
+            "--bar": { "type": "string", "description": "Bar range filter (e.g. 1-8)" }
+          },
+          "successSymbol": "CLIP_LIST"
+        },
+        "set-gain": {
+          "description": "Sets region gain in dB.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "required": true },
+            "--db": { "type": "number", "required": true }
+          },
+          "successSymbol": "CLIP_GAIN_UPDATED"
+        },
+        "set-mute": {
+          "description": "Mutes or unmutes a clip.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "required": true },
+            "--on": { "type": "boolean", "required": true }
+          },
+          "successSymbol": "CLIP_MUTE_UPDATED"
+        },
+        "split": {
+          "description": "Splits a clip into two regions at position.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "required": true },
+            "--at": { "type": "string", "required": true }
+          },
+          "successSymbol": "CLIP_SPLIT"
+        },
+        "trim-silence": {
+          "description": "Trims lead and tail silence on a clip.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "required": true },
+            "--threshold": { "type": "number", "required": true, "description": "Silence threshold in dB (e.g. -48.0)" },
+            "--fade-ms": { "type": "number", "required": true, "description": "Micro-fade duration in ms (e.g. 5.0)" }
+          },
+          "successSymbol": "CLIP_SILENCE_TRIMMED"
+        },
+        "quantize": {
+          "description": "Quantizes notes or clip start positions to grid.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "description": "Clip ID (0 for all)" },
+            "--grid": { "type": "string", "required": true, "description": "Grid division (1/1, 1/4, 1/16, 1/8T)" },
+            "--strength": { "type": "number", "required": true, "description": "Quantize strength (0.0..1.0)" }
+          },
+          "successSymbol": "CLIPS_QUANTIZED"
+        },
+        "merge": {
+          "description": "Merges pattern clips.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--start": { "type": "string", "description": "BBT start position" },
+            "--end": { "type": "string", "description": "BBT end position" },
+            "--clips": { "type": "string", "description": "Comma-separated clip ID list" }
+          },
+          "successSymbol": "CLIPS_MERGED"
+        },
+        "move": {
+          "description": "Relocates a clip to a target position.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "required": true },
+            "--to-pos": { "type": "string", "required": true },
+            "--to-track": { "type": "integer", "description": "Target track ID" }
+          },
+          "successSymbol": "CLIP_MOVED"
+        },
+        "nudge": {
+          "description": "Nudges clip position by grid fraction.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "required": true },
+            "--by": { "type": "string", "required": true, "description": "Grid offset (e.g. +1/16, -1/8)" }
+          },
+          "successSymbol": "CLIP_NUDGED"
+        }
+      }
+    },
+    "midi": {
+      "description": "MIDI editor note manipulation commands.",
+      "subcommands": {
+        "add-note": {
+          "description": "Adds a MIDI note event to a clip.",
+          "options": {
+            "--track": { "type": "integer", "required": true },
+            "--clip": { "type": "integer", "description": "Clip ID" },
+            "--pitch": { "type": "string", "required": true, "description": "Musical note pitch (e.g. C4, A5, Db5, F#-1, G9 or integer 0..127)" },
+            "--velocity": { "type": "integer", "required": true, "description": "MIDI velocity (0..127)" },
+            "--start": { "type": "string", "required": true, "description": "BBT start position" },
+            "--dur": { "type": "string", "required": true, "description": "BBT duration string" }
+          },
+          "successSymbol": "MIDI_NOTE_ADDED"
+        }
+      }
+    },
+    "route": {
+      "description": "Manages signal routing, submix folders, aux sends, and sidechain connections.",
+      "subcommands": {
+        "folder": {
+          "description": "Routes source track outputs to a destination folder/bus track.",
+          "options": {
+            "--track": { "type": "string", "required": true, "description": "Source track ID or range (e.g. 1..4)" },
+            "--to": { "type": "string", "required": true, "description": "Destination folder/bus track ID" }
+          },
+          "successSymbol": "ROUTE_FOLDER_UPDATED"
+        },
+        "send": {
+          "description": "Configures a pre/post-fader send from source tracks to a target Aux track.",
+          "options": {
+            "--from": { "type": "string", "required": true, "description": "Source track ID or range" },
+            "--to": { "type": "string", "required": true, "description": "Target Aux track ID" },
+            "--db": { "type": "number", "default": -12.0, "description": "Send level gain in dB" },
+            "--tap": { "type": "string", "enum": ["pre", "post"], "default": "post", "description": "Send tap point position" }
+          },
+          "successSymbol": "ROUTE_SEND_ADDED"
+        },
+        "sidechain": {
+          "description": "Links a trigger source track as sidechain input to a target plugin or instrument.",
+          "options": {
+            "--source": { "type": "string", "required": true, "description": "Trigger source track ID or range" },
+            "--to-track": { "type": "string", "required": true, "description": "Target track ID" },
+            "--slot": { "type": "integer", "default": 0, "description": "Target plugin slot index (0..7)" },
+            "--db": { "type": "number", "default": 0.0, "description": "Sidechain gain in dB" }
+          },
+          "successSymbol": "ROUTE_SIDECHAIN_LINKED"
+        },
+        "list": {
+          "description": "Lists signal routing topology across all tracks.",
+          "options": {
+            "--format": { "type": "string", "enum": ["tsv", "kv", "json", "pretty"], "default": "tsv" }
+          },
+          "successSymbol": "ROUTE_LIST"
+        }
+      }
+    },
+    "analyze": {
+      "description": "Non-visual DSP analysis and audio intelligence.",
+      "subcommands": {
+        "masking": {
+          "description": "Calculates psychoacoustic frequency masking and collision index across 24 Bark bands.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Primary track ID" },
+            "--vs": { "type": "integer", "required": true, "description": "Comparison target track ID" }
+          },
+          "successSymbol": "ANALYSIS_MASKING"
+        },
+        "resonance": {
+          "description": "Detects harsh narrow-Q spectral resonances and Q-factors using moving median filtering.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" }
+          },
+          "successSymbol": "ANALYSIS_RESONANCE"
+        },
+        "phase-matrix": {
+          "description": "Computes N x N pairwise Pearson phase correlation matrix across tracks.",
+          "options": {
+            "--track": { "type": "string", "required": true, "description": "Track range or list (e.g. 1..4, 1,2,3)" }
+          },
+          "successSymbol": "ANALYSIS_PHASE_MATRIX"
+        },
+        "phase-align": {
+          "description": "Calculates cross-correlation lag and recommends sample-accurate alignment offsets.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Primary reference track ID" },
+            "--vs": { "type": "integer", "required": true, "description": "Target track ID to align" }
+          },
+          "successSymbol": "ANALYSIS_PHASE_ALIGN"
+        },
+        "window": {
+          "description": "Performs offline telemetry analysis over a specified timeline range.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" },
+            "--start": { "type": "string", "required": true, "description": "BBT start position" },
+            "--dur": { "type": "string", "required": true, "description": "BBT duration string" }
+          },
+          "successSymbol": "ANALYSIS_WINDOW_STREAM"
+        },
+        "spectrum": {
+          "description": "Evaluates 7-band spectral energy balance, centroid, and spectral tilt.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" }
+          },
+          "successSymbol": "ANALYSIS_SPECTRUM"
+        },
+        "loudness": {
+          "description": "Performs EBU R128 integrated loudness, momentary/short-term peak LUFS, and LRA audit.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" }
+          },
+          "successSymbol": "ANALYSIS_LOUDNESS"
+        },
+        "true-peak": {
+          "description": "Audits 4x oversampled true-peak dBTP and inter-sample clipping events.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" }
+          },
+          "successSymbol": "ANALYSIS_TRUE_PEAK"
+        },
+        "stereo-width": {
+          "description": "Evaluates Mid/Side RMS balance, stereo width percentage, and mono-fold loss.",
+          "options": {
+            "--track": { "type": "integer", "required": true, "description": "Track ID" }
+          },
+          "successSymbol": "ANALYSIS_STEREO_WIDTH"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,402 @@
+<div align="center">
+
+# ![Strata](asset/strata.png) Stratawright: エージェンティック音楽制作のためのオープンソース AI DAW
+
+### Stratawright
+
+<p align="center">
+  <b>セッションのミキシング、バランス調整、整理を数秒で完了。<br>面倒なDAWのセットアップに時間を費やすのはやめましょう。AIアシスタントに指示を出し、クリエイティブなフローを維持できます。</b>
+</p>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Standard-green)](https://agentskills.io)
+[![Multi-Runtime](https://img.shields.io/badge/Runtime-Claude%20Code%20·%20Codex%20·%20Cursor%20·%20Hermes%20·%20Gemini-blueviolet)](#クイックスタート--agenticセットアップ)
+[![Plugin Host](https://img.shields.io/badge/Plugins-VST3%20%7C%20AU%20%7C%20CLAP-blue.svg)](#主な機能)
+
+---
+
+<p align="center">
+  <a href="#なぜ-agentic-daw-なのか">なぜ Agentic DAW なのか</a> •
+  <a href="#クイックスタート--agenticセットアップ">クイックスタート</a> •
+  <a href="#ユースケースの実演">ユースケースの実演</a> •
+  <a href="#stratawright-で-ai-エージェントができること">エージェント機能</a> •
+  <a href="#主な機能">主な機能</a> •
+  <a href="#開発者ガイド--ソースからのビルド">開発者ガイド</a> •
+  <a href="#ライセンス">ライセンス</a>
+</p>
+
+<p align="center">
+  <b>他の言語:</b><br>
+  <a href="README.md">English</a> •
+  <a href="README_ZH.md">简体中文</a> •
+  <a href="README_ZH_TW.md">繁體中文</a> •
+  <a href="README_KO.md">한국어</a>
+</p>
+</div>
+
+---
+
+## 概要
+
+あなたがDAWを開いたのは音楽を制作するためであり、ショートカットキーや修飾キー、複雑な操作画面の記憶に脳の半分を使い果たすためではありません。**ツールを記憶のためではなく、あなたの創造性のために役立てましょう。**
+
+**Stratawright** は、AI エージェントがネイティブに制御できる Agentic DAW であり、音楽制作に純粋に集中できるように設計されています。ストリーミング用のトラックレベルの調整、録音の背景ノイズの除去、全トラックへのエフェクトプラグインのルーティングに30分も手動で時間を費やす代わりに、AI アシスタント（**Claude Code**、**Cursor**、**Codex**、**Hermes**、**Gemini**）に自然言語で要件を伝えるだけです。セッションの準備とバランス調整が数秒で完了し、すぐに制作に入ることができます。
+
+---
+
+## なぜ Agentic DAW なのか？
+
+従来の DAW は、すべての操作を手動で行うキーボード＆マウス時代に合わせて構築されていました。100 トラックを超える大型セッションでは、単調な作業によって創造的なエネルギーが損なわれてしまいます。
+
+| 従来の DAW ワークフロー | Stratawright Agentic ワークフロー |
+| :--- | :--- |
+| **数百回のクリックと手動編集**：100 以上のトラックを 1 つずつ手動で選択、ゲイン調整、色分け、ルーティング。 | **たった 1 つのコマンド**：自然言語による 1 つのプロンプトで、100 以上のトラックを一瞬で決定論的に制御。 |
+| **ショートカットキーの負担**：忘れてしまったショートカットや複雑な修飾キーをウェブで検索。 | **自然言語での対話**：普段の言葉で AI エージェントに希望を伝えるだけ。 |
+| **コンテキストのないトラックラベル**：従来の DAW はトラック名を無機質な文字列として扱うため、手動でグループ化やバス設定が必要。 | **セマンティックインテリジェンス**：AI エージェントが文脈を理解（例：`GTR_L_57` → ギター Bus）し、自動でルーティング。 |
+| **創造性の断片化**：環境設定、ゲイン調整、ファイル下準備のためにインスピレーションが中断。 | **純粋なインスピレーションの維持**：AI エージェントが背景で頼もしいアシスタントとしてバックアップ。 |
+
+---
+
+## クイックスタート & Agenticセットアップ
+
+ターミナルコマンドや手動コンパイルは不要です。お使いのAIエージェント（**Claude Code**, **Codex**, **Cursor**, **Hermes**, **Gemini CLI**, **OpenCode** など 50 以上のツール）を開き、セットアップを指示してください：
+
+### 1. リポジトリのクローン
+プロジェクトのリポジトリをローカル環境にクローンします：
+
+```bash
+git clone https://github.com/Goldwaterfung/Stratawright.git
+cd Stratawright
+```
+
+または AI エージェントに伝える：
+
+```text
+https://github.com/Goldwaterfung/Stratawright をクローンしてプロジェクトをセットアップしてください
+```
+
+### 2. Stratawright のビルド＆セットアップ（エージェントがアプリをコンパイル）
+エージェントに伝える：
+
+```text
+Stratawright をビルドしてパッケージ化してください
+```
+
+*(エージェントがバックグラウンドで `./scripts/install_dependencies.sh` と `./scripts/build.sh release --package` を自動実行します)*。
+
+### 3. スキルのインストール（エージェントにDAW操作を学習させる）
+
+**[skills.sh](https://skills.sh)** (Vercel Agent Skills Registry) から直接インストール：
+
+```bash
+npx skills add Goldwaterfung/Stratawright/skills/daw-cli
+```
+
+またはチャットでエージェントに伝える：
+
+```text
+https://github.com/Goldwaterfung/Stratawright から daw-cli スキルをインストールしてください
+```
+
+<details>
+<summary><b>オプション2：スキルディレクトリの手動セットアップ</b></summary>
+<br>
+
+手動でお好みのAIエージェントフレームワークにスキルを導入する場合は、`skills/daw-cli/` ディレクトリをコピーまたはシンボリックリンク配置してください：
+
+| エージェントフレームワーク | ローカルワークスペーススキルパス | グローバルユーザースキルパス |
+| :--- | :--- | :--- |
+| **Codex** | `.agents/skills/daw-cli` | `~/.agents/skills/daw-cli` |
+| **Claude Code / Co-Work** | `.claude/skills/daw-cli` | `~/.claude/skills/daw-cli` |
+| **Hermes** | `.hermes/skills/daw-cli` | `~/.hermes/skills/daw-cli` |
+| **Antigravity** | `.agents/skills/daw-cli` | `~/.gemini/config/skills/daw-cli` |
+| **Gemini CLI** | `.gemini/skills/daw-cli` | `~/.gemini/skills/daw-cli` |
+| **OpenCode** | `.opencode/skills/daw-cli` | `~/.config/opencode/skills/daw-cli` |
+
+導入後、エージェントは [`skills/daw-cli/SKILL.md`](skills/daw-cli/SKILL.md) を運用マニュアルとして使用します。
+
+</details>
+
+---
+
+## ユースケースの実演
+
+以下は Stratawright で `daw-cli` を使用した Agentic ワークフローのリアルタイムデモです：
+
+### 🎬 ユースケース 1: マルチトラックの即時取り込み、クリップ配置、自動カラーリング
+
+> **自然言語プロンプト:**  
+> *" `/Volumes/AudioDrives/Stems/Song_Session_A/` 内のすべてのオーディオファイルをインポートして。すべてのクリップをタイムラインの開始位置に配置し、トラック名から余計な拡張子やアンダースコアをクリーンアップして、楽器タイプに基づいて自動でカラーリングしてセッションを整理して。"*
+
+![ユースケース 1: マルチトラック取り込みと自動カラーリング](asset/usecase-1.gif)
+
+* **主要コマンド:** `daw-cli track create`, `daw-cli clip add-audio`, `daw-cli track sanitize-names`, `daw-cli track auto-color`
+
+---
+
+### 🎬 ユースケース 2: マルチトラックセッションの構成とフェーダーレイアウト
+
+> **自然言語プロンプト:**  
+> *"124 BPMのセッションを設定し、Kick、Snare Top、Snare Bottom、Hi-Hat、Tom 1、Tom 2、ステレオOverheadの8ピースドラムキットを作成して。自動でカラー分けし、ヘッドルーム確保のためにすべてのフェーダーを -6 dB に設定し、Overheadを左右100%にパンニングして。"*
+
+![ユースケース 2: セッション構成とフェーダーレイアウト](asset/usecase-2.gif)
+
+* **主要コマンド:** `daw-cli transport set-tempo`, `daw-cli track create-batch`, `daw-cli track auto-color`, `daw-cli track set-gain`, `daw-cli track set-pan`
+
+---
+
+### 🎬 ユースケース 3: 選択的ステム取り込み、シンセプラグイン挿入、サブミックスルーティング
+
+> **自然言語プロンプト:**  
+> *" `/Volumes/AudioDrives/Stems/Song_Session_A/stems` 内のステムとインストール済みプラグインライブラリを確認して。プロ仕様のSynth Rockミックスをセットアップして。ドラムとギターのステムのみをインポートし、'Sub Bass'と'Synth Bass'にSerum 2を挿入し、プロ仕様のサブミックスグループを構成して。"*
+
+![ユースケース 3: 選択的ステム取り込み、シンセプラグイン挿入、サブミックスルーティング](asset/usecase-3.gif)
+
+* **主要コマンド:** `daw-cli plugin scan`, `daw-cli plugin add`, `daw-cli route folder`, `daw-cli prep gain-stage`
+
+---
+
+## エージェントコマンドの使用例
+
+以下は Stratawright で AI アシスタントと連携する実際の操作イメージです：
+
+```text
+User    ❯ テンポを 128 BPM に設定し、Kick、Snare、HH、Tom のトラックを作成して、音量レベルのバランスを整えて。
+
+Agent   ❯ [Strata Agentic Engine]
+          ✓ セッションテンポを 128.0 BPM (4/4拍子) に設定しました
+          ✓ 4つのオーディオトラック（Kick, Snare, HH, Tom）を作成しました
+          ✓ クリッピングを防ぐためトラック 1..4 の音量レベルを調整しました
+          完了しました。アレンジメント作業をどうぞ。
+```
+
+```text
+User    ❯ Snare トラックに FabFilter Pro-Q 3 イコライザーを追加し、そのプラグインチェーンを Tom トラックすべてにコピーして。
+
+Agent   ❯ [Strata Agentic Engine]
+          ✓ システムの VST3/AU プラグインをスキャンしました
+          ✓ トラック 2 (Snare) のスロット 0 に 'FabFilter Pro-Q 3' を挿入しました
+          ✓ トラック 2 のプラグインチェーンをトラック 3..4 にコピーしました
+```
+
+---
+
+## 主な機能
+
+<table width="100%">
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎛️ 完璧な音量バランスとクリアな録音</h3>
+      <p>トラックレベルを自動調整し、楽曲をクリアでパンチの効いたストリーミング対応の音質に仕上げます。録音素材の背景ノイズ、部屋の反射音、無音部分も自動カット。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔌 瞬時に完了するFX・プラグイン設定</h3>
+      <p>お気に入りのプラグイン（FabFilter, Waves, iZotope など）を読み込み、一言伝えるだけでボーカルやドラム用のミキシングチェーンを複数トラックに一括適用。</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎙️ 迅速なアイデア優先の楽曲制作</h3>
+      <p>アシスタントとの自然な会話により、トラック構成の構築、ビートやシンセメロディのシーケンス、音量/パンの調整、タイムラインのクリップ編集を即座に実行。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>⚡ スムーズでノイズのないスタジオパフォーマンス</h3>
+      <p>多数のトラックと重いプラグインを重ねた大規模プロジェクトでも、ノイズ、ポップ音、遅延なしでクリアに再生・録音できます。</p>
+    </td>
+  </tr>
+</table>
+
+---
+
+## Stratawright で AI エージェントができること
+
+複雑なメニューの移動やショートカットキーの記憶、個別ノブの手動調整を行う代わりに、自然言語でお使いの AI アシスタント（**Claude Code**, **Cursor**, **Codex**, **Hermes**, **Gemini** など）に指示を出すだけです：
+
+<table width="100%">
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎚️ スマートゲインステージング & トラックレベリング</h3>
+      <p>各トラックの音量バランスやパンの調整、マルチトラックのゲインステージング（Gain-Staging）を自動で行い、クリッピングを防ぎつつ明瞭なミックスを実現します。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔌 VST3 / AU プラグインホスティング & FX チェーン</h3>
+      <p>インストール済みエフェクトプラグイン（FabFilter, iZotope, Waves 等）をスキャンして EQ やコンプレッサーを自動挿入し、設定したエフェクトチェーンを他のトラックへ一瞬で複製できます。</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎹 MIDI シーケンス & タイムラインクリップ編集</h3>
+      <p>ドラムパターンの構築、シンセリードの MIDI クリップ作成、トランスポーズ（移調）、タイムライン上のオーディオクリップ配置・分割を会話形式で素早く指示できます。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔀 バスサブミックス & センド/サイドチェーンルーティング</h3>
+      <p>トラックをフォルダースブミックスバスにグループ化し、プリ/ポストフェーダーのセンド設定やプラグイン間のダイナミック・サイドチェーン圧縮トリガーを構築します。</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>⏱️ トランスポート再生 & セッション管理</h3>
+      <p>テンポ（BPM）や拍号の設定、再生・停止・プレイヘッドの移動、トラックのカラー整理やリネームをリアルタイムで実行します。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🔬 非視覚的DSP解析 & オーディオインテリジェンス</h3>
+      <p>トラック間のBarkスケール周波数マスキングやエネルギー衝突の検出、狭帯域Qレゾナンス峰と音高マッピング、マルチトラックPearson位相相関行列、マルチマイク位相整列、リアルタイムLUFS/True-Peakテレメトリを即座に解析します。</p>
+    </td>
+  </tr>
+</table>
+
+### 🚀 対応している AI 音楽制作コマンド
+
+* **セッション & トランスポート制御**: BPM 設定、拍号変更、プレイヘッド移動、再生/停止。
+* **トラック作成 & レベリング**: オーディオ/インストゥルメントトラック追加、音量・パン設定、ミュート/ソロ、自動ゲインステージング。
+* **プラグイン管理**: VST3/AU プラグインの挿入、パラメータ微調整、別トラックへのエフェクトチェーン複製。
+* **タイムライン & MIDI 編集**: オーディオクリップ配置、開始オフセット・長さの調整、MIDI ノート入力、メロディのトランスポーズ。
+* **バスサブミックス & センド/サイドチェーンルーティング**: トラック出力をフォルダグループバスへリダイレクト、プリ/ポストセンド FX 設定、プラグインサイドチェーン圧縮トリガーの連携。
+* **非視覚的DSP解析 & オーディオインテリジェンス**: Barkスケール周波数マスキングの検出、共鳴ピークの特定、多重トラック位相相関行列の算出とサンプル精度オフセット、ライブLUFS/dBTPテレメトリの取得、7バンドスペクトルエネルギー評価、ステレオ幅とモノラル互換性の検証。
+
+---
+
+## 開発者ガイド & ソースからのビルド
+
+Stratawright は、AI 駆動の音楽制作のために構築されたオープンソースの高性能 C++20 DAW エンジンです。AI エージェントは [`skills/daw-cli/SKILL.md`](skills/daw-cli/SKILL.md) スキル定義を介して DAW と通信します。
+
+<details>
+<summary><b>ソースからのビルド & コンパイル</b></summary>
+<br>
+
+### 前提条件
+
+本プロジェクトでは、依存関係の管理に **vcpkg** のマニフェストモードを使用しています。
+
+#### 必須ツール
+- **CMake** 3.20 以上
+- **Git**
+- **C++20 対応コンパイラ**: Clang 12+, GCC 11+, MSVC 2022+
+
+#### 自動セットアップ
+セットアップスクリプトを実行して、依存ライブラリ（RtAudio, RtMidi, libsndfile, nlohmann_json, spdlog, Catch2）をインストールします：
+
+```bash
+./scripts/install_dependencies.sh
+```
+
+---
+
+### ビルド手順
+
+1. **リポジトリのクローン**:
+   ```bash
+   git clone https://github.com/Goldwaterfung/Stratawright.git
+   cd Stratawright
+   ```
+
+2. **設定とビルド**:
+   ```bash
+   mkdir -p build/debug && cd build/debug
+   cmake -DCMAKE_BUILD_TYPE=Debug ../../
+   cmake --build . --parallel
+   ```
+
+3. **アプリケーションの実行**:
+   ```bash
+   ./bin/stratawright
+   ```
+
+---
+
+### ビルドオプション
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left">オプション</th>
+      <th align="center">デフォルト</th>
+      <th align="left">説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>BUILD_TESTS</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>ユニットテストのビルド</td>
+    </tr>
+    <tr>
+      <td><code>BUILD_PERFORMANCE_TESTS</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>パフォーマンスベンチマークのビルド</td>
+    </tr>
+    <tr>
+      <td><code>ENABLE_SIMD</code></td>
+      <td align="center"><code>ON</code></td>
+      <td>SIMD最適化の有効化 (AVX2)</td>
+    </tr>
+    <tr>
+      <td><code>USE_ASAN</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>Address Sanitizer の有効化</td>
+    </tr>
+    <tr>
+      <td><code>USE_TSAN</code></td>
+      <td align="center"><code>OFF</code></td>
+      <td>Thread Sanitizer の有効化</td>
+    </tr>
+    <tr>
+      <td><code>BUILD_PLUGINS</code></td>
+      <td align="center"><code>ON</code></td>
+      <td>プラグインホストサポートのビルド</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+### テスト＆リリースビルド
+
+```bash
+# ユニットテストのビルド＆実行
+./scripts/build.sh debug --test
+
+# リリリースバイナリのビルド
+./scripts/build.sh release
+
+# パッケージ版リリース
+./scripts/build.sh release --package
+```
+
+</details>
+
+---
+
+## 開発ロードマップ
+
+### Agentic Layer (`daw-cli`) 機能ステータス
+
+- [x] **セッション状態＆トランスポート** (`status`, `transport`) - 実装済み
+- [x] **トラック管理＆ゲインステージング** (`track`, `prep`) - 実装済み
+- [x] **VST3 / AU プラグインホスト管理** (`plugin`) - 実装済み
+- [x] **バス・サブミキシング＆Auxエフェクトルーティング** (`route`) - 実装済み
+- [x] **非視覚的DSP解析＆オーディオインテリジェンス** (`analyze`) - 実装済み
+- [ ] **Stem出力＆非同期レンダリング** (`export`, `job`) - *開発中*
+
+---
+
+## ライセンス
+
+<div align="center">
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+本プロジェクトは [MIT ライセンス](LICENSE) の下で公開されています。
+
+</div>
+
+---
+
+## 謝辞
+
+<div align="center">
+
+アーキテクチャのインスピレーション：  
+**[Ardour](https://ardour.org/)** (libardour) • **[Bitwig Studio](https://www.bitwig.com/)** • **[Reaper](https://www.reaper.fm/)** • **[JUCE Framework](https://juce.com/)**
+
+</div>
